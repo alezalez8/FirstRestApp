@@ -2,6 +2,7 @@ package org.shunin.firstrestapp.services;
 
 import org.shunin.firstrestapp.models.Person;
 import org.shunin.firstrestapp.repositories.PeopleRepository;
+import org.shunin.firstrestapp.util.PersonNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,9 +25,9 @@ public class PeopleService {
         return peopleRepository.findAll();
     }
 
-    public Person findById(int id) {
+    public Person findOne(int id) {
         Optional<Person> foundPerson = peopleRepository.findById(id);
-        return foundPerson.orElse(null);
+        return foundPerson.orElseThrow(PersonNotFoundException::new);
 
     }
 }
