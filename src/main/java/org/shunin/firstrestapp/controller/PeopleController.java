@@ -73,10 +73,10 @@ public class PeopleController { // т.е. @ResponseBody отдает java-объ
     @ExceptionHandler // этот метод ловит исключения и который возвращает необходимый объект
     private ResponseEntity<PersonErrorResponse> handleException(PersonNotCreatedException e) {
         PersonErrorResponse response = new PersonErrorResponse(
-                ,
+                e.getMessage(),
                 System.currentTimeMillis()
         );
         // B HTTTP ответе тело ответа (response) и статус в заголовке
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }
