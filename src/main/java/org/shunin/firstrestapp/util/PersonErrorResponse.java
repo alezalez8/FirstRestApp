@@ -1,6 +1,6 @@
 package org.shunin.firstrestapp.util;
 
-public class PersonErrorResponse {
+public class PersonErrorResponse { // его объекты отрпавляются с случае ошибки
     private String message;
     private long timestamp;
 

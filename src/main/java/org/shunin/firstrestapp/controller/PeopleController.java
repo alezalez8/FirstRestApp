@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping("/people")
+@RestController    // @Controller + @ResponseBody над каждым методом, этот класс оперирует не моделями, а данными.
+@RequestMapping("/people")  // Аннотация @ResponseBody ставится на методы, которые работают с данными, а не с моделями.
 public class PeopleController {
 
     private final PeopleService peopleService;
@@ -33,7 +33,7 @@ public class PeopleController {
         return peopleService.findOne(id); // Jackson конвертирует в JSON
     }
 
-    @ExceptionHandler
+    @ExceptionHandler // этот метод ловит исключения и который возвращает необходимый объект
     private ResponseEntity<PersonErrorResponse> handleException(PersonNotFoundException e) {
         PersonErrorResponse response = new PersonErrorResponse(
                 "Person with this id wasn't found",
