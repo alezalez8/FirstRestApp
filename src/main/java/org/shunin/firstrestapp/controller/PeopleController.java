@@ -1,6 +1,7 @@
 package org.shunin.firstrestapp.controller;
 
 
+import org.shunin.firstrestapp.dto.PersonDTO;
 import org.shunin.firstrestapp.models.Person;
 import org.shunin.firstrestapp.services.PeopleService;
 import org.shunin.firstrestapp.util.PersonErrorResponse;
@@ -15,6 +16,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController    // @Controller + @ResponseBody над каждым методом, этот класс оперирует не моделями, а данными.
@@ -40,7 +42,7 @@ public class PeopleController { // т.е. @ResponseBody отдает java-объ
 
 
     @PostMapping
-    public ResponseEntity<HttpStatus> create(@RequestBody @Valid Person person,
+    public ResponseEntity<HttpStatus> create(@RequestBody @Valid PersonDTO personDTO,
                                              BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder errorMsg = new StringBuilder();
@@ -54,7 +56,7 @@ public class PeopleController { // т.е. @ResponseBody отдает java-объ
             }
             throw new PersonNotCreatedException(errorMsg.toString());
         }
-        peopleService.save(person);
+        peopleService.save(convertToPerson(personDTO));
         // отправляем НТТР ответ с пустым телом и со статусом 200
         return ResponseEntity.ok(HttpStatus.OK);
 
@@ -79,4 +81,14 @@ public class PeopleController { // т.е. @ResponseBody отдает java-объ
         // B HTTTP ответе тело ответа (response) и статус в заголовке
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
+
+    private Person convertToPerson(PersonDTO personDTO) {
+        Person person = new Person();
+        person.setName(personDTO.getName());
+        person.setAge(personDTO.getAge());
+        person.setEmail(personDTO.getEmail());
+        return person;
+    }
+
+
 }
